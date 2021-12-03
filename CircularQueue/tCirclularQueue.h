@@ -21,6 +21,7 @@ public:
 
 	bool push(const T& val) //returns true if it writes a value to the write index, otherwise it returns false
 	{
+
 		size_t tempWriteIndex = writeIndex + 1;
 		if (tempWriteIndex == RAW_CAPACITY) tempWriteIndex = 0;
 		if (tempWriteIndex == readIndex) {
@@ -35,13 +36,49 @@ public:
 
 		}
 	}
-	bool pop();
+	bool pop()              //returns true if it pops a valur at the read index{
+	{
+		if (readIndex == writeIndex) return false;
+		size_t tempReadIndex = readIndex = 1;
+		if (tempReadIndex == RAW_CAPACITY) tempReadIndex = 0;
+		if (tempReadIndex == writeIndex) {
+			readIndex = tempReadIndex;
+			return false;
+		}
+		else {
+			readIndex = tempReadIndex;
+			return true;
+		}
+	}
 
-	const T& front() const;  //retrieves the value at the front of the read index
+	const T& front()  //retrieves the value at the front of the read index{
+	{
+		return arr[readIndex];
+	}
 
-	bool empty() const;      //returns true if there are no unpopped elements
-	size_t size() const;     //returns the current number of elements pushed
-	size_t capacity() const; //returns the maximum number of elements that can be pushed
+	bool isEmpty()      //returns true if there are no unpopped elements
+	{
+		return readIndex == writeIndex;
+	}
+	bool isFull()
+	{
+		size_t testIndx = writeIndex + 1;
+		if (testIndx == RAW_CAPACITY) testIndx = 0;
+		if (testIndx == readIndex) return false;
+	}
+	size_t size()     //returns the current number of elements pushed
+	{
+		size_t size;
+		size = readIndex > writeIndex ? (RAW_CAPACITY - readIndex + writeIndex + 1) : (writeIndex - readIndex + 1);
+		return size;
+	}
+	size_t capacity() //returns the maximum number of elements that can be pushed{
+	{
+		size_t size;
+		size = writeIndex > readIndex ? (RAW_CAPACITY - writeIndex - readIndex + 1) : (readIndex - writeIndex + 1);
+	}
+
+	
 	
 private:
 	T* arr; // pointer to the underlying array
